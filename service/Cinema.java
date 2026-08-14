@@ -57,9 +57,9 @@ public class Cinema {
         return shows;
     }
 
-    // =========================
+    // =========================================
     // TICKETS
-    // =========================
+    // =========================================
 
     public void addTicket(Ticket ticket) {
 
@@ -124,7 +124,7 @@ public class Cinema {
             return false;
         }
 
-        // Already cancelled
+        // Ticket already cancelled
         if (ticket.getStatus().equals("CANCELLED")) {
 
             return false;
@@ -149,7 +149,7 @@ public class Cinema {
             return false;
         }
 
-        // Already cancelled
+        // Show already cancelled
         if (show.getStatus().equals("CANCELLED")) {
 
             return false;
@@ -162,7 +162,8 @@ public class Cinema {
         // to this show
         for (Ticket ticket : tickets) {
 
-            if (ticket.getShow() == show && !ticket.getStatus().equals("CANCELLED")) {
+            if (ticket.getShow() == show
+                    && !ticket.getStatus().equals("CANCELLED")) {
 
                 ticket.cancelTicket(reason);
             }
