@@ -1,24 +1,24 @@
 package GUI;
 
-import model.user.Customer;
+import model.user.Admin;
 import service.Cinema;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class CustomerLoginFrame extends JFrame {
+public class AdminLoginFrame extends JFrame {
+
+    private Cinema cinema;
 
     private JTextField idField;
     private JTextField nameField;
     private JTextField phoneField;
 
-    private Cinema cinema;
-
-    public CustomerLoginFrame(Cinema cinema) {
+    public AdminLoginFrame(Cinema cinema) {
 
         this.cinema = cinema;
 
-        setTitle("Customer Login");
+        setTitle("Admin Login");
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -32,9 +32,8 @@ public class CustomerLoginFrame extends JFrame {
         gbc.insets =
                 new Insets(10, 10, 10, 10);
 
-        // Title
         JLabel title =
-                new JLabel("CUSTOMER LOGIN");
+                new JLabel("ADMIN LOGIN");
 
         title.setFont(
                 new Font(
@@ -57,7 +56,7 @@ public class CustomerLoginFrame extends JFrame {
         gbc.gridy = 1;
 
         panel.add(
-                new JLabel("Customer ID:"),
+                new JLabel("Admin ID:"),
                 gbc
         );
 
@@ -145,15 +144,15 @@ public class CustomerLoginFrame extends JFrame {
                 return;
             }
 
-            Customer customer =
-                    new Customer(
+            Admin admin =
+                    new Admin(
                             id,
                             name,
                             phone
                     );
 
-            new CustomerDashboard(
-                    customer,
+            new AdminDashboard(
+                    admin,
                     cinema
             );
 
@@ -163,7 +162,7 @@ public class CustomerLoginFrame extends JFrame {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "Customer ID must be a number."
+                    "Admin ID must be a number."
             );
         }
     }

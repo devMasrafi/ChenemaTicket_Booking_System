@@ -1,6 +1,9 @@
 package GUI;
 
 import model.Movie;
+import model.Seat;
+import model.Show;
+import model.Ticket;
 import model.user.Customer;
 import service.Cinema;
 
@@ -9,50 +12,48 @@ import java.awt.*;
 
 public class CustomerDashboard extends JFrame {
 
-        private Customer customer;
-        private Cinema cinema;
+    private Customer customer;
+    private Cinema cinema;
 
-        private JPanel contentPanel;
+    private JPanel contentPanel;
 
-        private int getAvailableSeats(model.Show show) {
-                int available = 0;
-                for (model.Seat seat : show.getSeats()) {
+    private int nextTicketId = 1001;
 
-                        if (!seat.isBooked()) {
-                                available++;
-                        }
-                }
-                return available;
-        }
-
-        public CustomerDashboard(Customer customer, Cinema cinema) {
+    public CustomerDashboard(Customer customer, Cinema cinema) {
 
         this.customer = customer;
         this.cinema = cinema;
 
         setTitle("Cinema - Customer Dashboard");
-        setSize(900, 600);
+        setSize(1000, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Main layout
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        // =========================
+        // MAIN PANEL
+        // =========================
+
+        JPanel mainPanel =
+                new JPanel(new BorderLayout());
 
         // =========================
         // HEADER
         // =========================
 
-        JLabel welcomeLabel = new JLabel(
-                "Welcome, " + customer.getName(),
-                SwingConstants.CENTER
-        );
+        JLabel welcomeLabel =
+                new JLabel(
+                        "Welcome, " + customer.getName(),
+                        SwingConstants.CENTER
+                );
 
         welcomeLabel.setFont(
                 new Font("Arial", Font.BOLD, 26)
         );
 
         welcomeLabel.setBorder(
-                BorderFactory.createEmptyBorder(15, 10, 15, 10)
+                BorderFactory.createEmptyBorder(
+                        15, 10, 15, 10
+                )
         );
 
         mainPanel.add(
@@ -71,14 +72,25 @@ public class CustomerDashboard extends JFrame {
         );
 
         menuPanel.setBorder(
-                BorderFactory.createEmptyBorder(15, 15, 15, 15)
+                BorderFactory.createEmptyBorder(
+                        15, 15, 15, 15
+                )
         );
 
-        JButton moviesButton = new JButton("View Movies");
-        JButton showsButton = new JButton("View Shows");
-        JButton bookingButton = new JButton("Book Ticket");
-        JButton ticketsButton = new JButton("My Tickets");
-        JButton logoutButton = new JButton("Logout");
+        JButton moviesButton =
+                new JButton("View Movies");
+
+        JButton showsButton =
+                new JButton("View Shows");
+
+        JButton bookingButton =
+                new JButton("Book Ticket");
+
+        JButton ticketsButton =
+                new JButton("My Tickets");
+
+        JButton logoutButton =
+                new JButton("Logout");
 
         menuPanel.add(moviesButton);
         menuPanel.add(showsButton);
@@ -92,17 +104,17 @@ public class CustomerDashboard extends JFrame {
         );
 
         // =========================
-        // CONTENT AREA
+        // CONTENT PANEL
         // =========================
 
-        contentPanel = new JPanel(
-                new BorderLayout()
-        );
+        contentPanel =
+                new JPanel(new BorderLayout());
 
-        JLabel welcomeMessage = new JLabel(
-                "Select an option from the menu",
-                SwingConstants.CENTER
-        );
+        JLabel welcomeMessage =
+                new JLabel(
+                        "Select an option from the menu",
+                        SwingConstants.CENTER
+                );
 
         welcomeMessage.setFont(
                 new Font("Arial", Font.PLAIN, 20)
@@ -125,11 +137,19 @@ public class CustomerDashboard extends JFrame {
         moviesButton.addActionListener(e -> {
             showMovies();
         });
+
         showsButton.addActionListener(e -> {
-                showShows();
+            showShows();
         });
 
-        // Logout
+        bookingButton.addActionListener(e -> {
+            showShows();
+        });
+
+        ticketsButton.addActionListener(e -> {
+            showMyTickets();
+        });
+
         logoutButton.addActionListener(e -> {
 
             dispose();
@@ -142,18 +162,19 @@ public class CustomerDashboard extends JFrame {
         setVisible(true);
     }
 
-        // =========================
-        // SHOW MOVIES
-        // =========================
+    // =====================================================
+    // MOVIES
+    // =====================================================
 
-        private void showMovies() {
+    private void showMovies() {
 
         contentPanel.removeAll();
 
-        JLabel title = new JLabel(
-                "NOW SHOWING",
-                SwingConstants.CENTER
-        );
+        JLabel title =
+                new JLabel(
+                        "NOW SHOWING",
+                        SwingConstants.CENTER
+                );
 
         title.setFont(
                 new Font("Arial", Font.BOLD, 24)
@@ -175,19 +196,19 @@ public class CustomerDashboard extends JFrame {
 
         if (cinema.getMovies().isEmpty()) {
 
-            JLabel emptyLabel = new JLabel(
-                    "No movies available."
+            moviePanel.add(
+                    new JLabel("No movies available.")
             );
-
-            moviePanel.add(emptyLabel);
 
         } else {
 
-            for (Movie movie : cinema.getMovies()) {
+            for (Movie movie :
+                    cinema.getMovies()) {
 
-                JPanel movieCard = new JPanel(
-                        new GridLayout(4, 1)
-                );
+                JPanel movieCard =
+                        new JPanel(
+                                new GridLayout(4, 1)
+                        );
 
                 movieCard.setBorder(
                         BorderFactory.createTitledBorder(
@@ -198,27 +219,32 @@ public class CustomerDashboard extends JFrame {
                 movieCard.add(
                         new JLabel(
                                 "Movie ID: "
-                                + movie.getMovieId()
+                                        + movie.getMovieId()
                         )
                 );
 
                 movieCard.add(
                         new JLabel(
                                 "Genre: "
-                                + movie.getGenre()
+                                        + movie.getGenre()
                         )
                 );
 
                 movieCard.add(
                         new JLabel(
                                 "Duration: "
-                                + movie.getDuration()
-                                + " hours"
+                                        + movie.getDuration()
+                                        + " hours"
                         )
                 );
 
-                JButton showButton =new JButton("View Shows");
-                
+                JButton showButton =
+                        new JButton("View Shows");
+
+                showButton.addActionListener(e -> {
+                    showShows();
+                });
+
                 movieCard.add(showButton);
 
                 moviePanel.add(movieCard);
@@ -233,111 +259,493 @@ public class CustomerDashboard extends JFrame {
                 BorderLayout.CENTER
         );
 
-        // Refresh the content panel
-        contentPanel.revalidate();
-        contentPanel.repaint();
+        refreshContent();
     }
 
-        // =========================
-        // SHOW SHOWS
-        // =========================
+    // =====================================================
+    // SHOWS
+    // =====================================================
 
-        private void showShows() {
+    private void showShows() {
 
         contentPanel.removeAll();
 
-        JLabel title = new JLabel(
-            "AVAILABLE SHOWS",
-            SwingConstants.CENTER
-        );
+        JLabel title =
+                new JLabel(
+                        "AVAILABLE SHOWS",
+                        SwingConstants.CENTER
+                );
 
         title.setFont(
-            new Font("Arial", Font.BOLD, 24)
+                new Font("Arial", Font.BOLD, 24)
         );
 
         contentPanel.add(
-            title,
-            BorderLayout.NORTH
+                title,
+                BorderLayout.NORTH
         );
 
         JPanel showPanel = new JPanel();
 
         showPanel.setLayout(
-            new BoxLayout(
-                    showPanel,
-                    BoxLayout.Y_AXIS
-            )
+                new BoxLayout(
+                        showPanel,
+                        BoxLayout.Y_AXIS
+                )
         );
 
         if (cinema.getShows().isEmpty()) {
 
-        JLabel emptyLabel = new JLabel(
-                "No shows available."
-        );
-
-        showPanel.add(emptyLabel);
+            showPanel.add(
+                    new JLabel("No shows available.")
+            );
 
         } else {
 
-        for (model.Show show : cinema.getShows()) {
+            for (Show show :
+                    cinema.getShows()) {
 
-            JPanel showCard = new JPanel(
-                    new GridLayout(5, 1)
-            );
+                JPanel showCard =
+                        new JPanel(
+                                new GridLayout(5, 1)
+                        );
 
-            showCard.setBorder(
-                    BorderFactory.createTitledBorder(
-                            show.getMovie().getMovieName()
-                    )
-            );
+                showCard.setBorder(
+                        BorderFactory.createTitledBorder(
+                                show.getMovie().getMovieName()
+                        )
+                );
 
-            showCard.add(
-                    new JLabel(
-                            "Show ID: "
-                            + show.getShowId()
-                    )
-            );
+                showCard.add(
+                        new JLabel(
+                                "Show ID: "
+                                        + show.getShowId()
+                        )
+                );
 
-            showCard.add(
-                    new JLabel(
-                            "Date: "
-                            + show.getDate()
-                    )
-            );
+                showCard.add(
+                        new JLabel(
+                                "Date: "
+                                        + show.getDate()
+                        )
+                );
 
-            showCard.add(
-                    new JLabel(
-                            "Time: "
-                            + show.getTime()
-                    )
-            );
+                showCard.add(
+                        new JLabel(
+                                "Time: "
+                                        + show.getTime()
+                        )
+                );
 
-            showCard.add(
-                    new JLabel(
-                            "Available Seats: "
-                            + getAvailableSeats(show)
-                    )
-            );
+                showCard.add(
+                        new JLabel(
+                                "Available Seats: "
+                                        + getAvailableSeats(show)
+                        )
+                );
 
-            JButton bookButton =
-                    new JButton("Book This Show");
+                JButton bookButton =
+                        new JButton("Book This Show");
 
-            showCard.add(bookButton);
+                bookButton.addActionListener(e -> {
+                    showSeatSelection(show);
+                });
 
-            showPanel.add(showCard);
-        }
+                showCard.add(bookButton);
+
+                showPanel.add(showCard);
+            }
         }
 
         JScrollPane scrollPane =
-            new JScrollPane(showPanel);
+                new JScrollPane(showPanel);
 
         contentPanel.add(
-            scrollPane,
-            BorderLayout.CENTER
+                scrollPane,
+                BorderLayout.CENTER
         );
+
+        refreshContent();
+    }
+
+    // =====================================================
+    // AVAILABLE SEATS
+    // =====================================================
+
+    private int getAvailableSeats(Show show) {
+
+        int available = 0;
+
+        for (Seat seat : show.getSeats()) {
+
+            if (!seat.isBooked()) {
+                available++;
+            }
+        }
+
+        return available;
+    }
+
+    // =====================================================
+    // SEAT SELECTION
+    // =====================================================
+
+    private void showSeatSelection(Show show) {
+
+        contentPanel.removeAll();
+
+        JLabel title =
+                new JLabel(
+                        "SELECT YOUR SEAT - "
+                                + show.getMovie().getMovieName(),
+                        SwingConstants.CENTER
+                );
+
+        title.setFont(
+                new Font("Arial", Font.BOLD, 22)
+        );
+
+        contentPanel.add(
+                title,
+                BorderLayout.NORTH
+        );
+
+        JPanel seatPanel = new JPanel();
+
+        seatPanel.setLayout(
+                new GridLayout(
+                        4,
+                        5,
+                        10,
+                        10
+                )
+        );
+
+        ButtonGroup seatGroup =
+                new ButtonGroup();
+
+        for (Seat seat :
+                show.getSeats()) {
+
+            JRadioButton seatButton =
+                    new JRadioButton(
+                            seat.getSeatNumber()
+                    );
+
+            seatButton.setHorizontalAlignment(
+                    SwingConstants.CENTER
+            );
+
+            seatButton.setActionCommand(
+                    seat.getSeatNumber()
+            );
+
+            if (seat.isBooked()) {
+
+                seatButton.setEnabled(false);
+            }
+
+            seatGroup.add(seatButton);
+
+            seatPanel.add(seatButton);
+        }
+
+        JScrollPane scrollPane =
+                new JScrollPane(seatPanel);
+
+        contentPanel.add(
+                scrollPane,
+                BorderLayout.CENTER
+        );
+
+        // =========================
+        // BOTTOM
+        // =========================
+
+        JPanel bottomPanel =
+                new JPanel();
+
+        JButton confirmButton =
+                new JButton("Confirm Booking");
+
+        JButton backButton =
+                new JButton("Back to Shows");
+
+        bottomPanel.add(confirmButton);
+        bottomPanel.add(backButton);
+
+        contentPanel.add(
+                bottomPanel,
+                BorderLayout.SOUTH
+        );
+
+        // =========================
+        // BACK
+        // =========================
+
+        backButton.addActionListener(e -> {
+
+            showShows();
+        });
+
+        // =========================
+        // CONFIRM
+        // =========================
+
+        confirmButton.addActionListener(e -> {
+
+            ButtonModel selectedModel =
+                    seatGroup.getSelection();
+
+            if (selectedModel == null) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Please select a seat."
+                );
+
+                return;
+            }
+
+            String selectedSeatNumber =
+                    selectedModel.getActionCommand();
+
+            Seat selectedSeat = null;
+
+            for (Seat seat :
+                    show.getSeats()) {
+
+                if (seat.getSeatNumber()
+                        .equals(selectedSeatNumber)) {
+
+                    selectedSeat = seat;
+                    break;
+                }
+            }
+
+            if (selectedSeat == null) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Seat could not be found."
+                );
+
+                return;
+            }
+
+            // Check again before booking
+            if (selectedSeat.isBooked()) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Sorry, this seat is already booked."
+                );
+
+                showSeatSelection(show);
+
+                return;
+            }
+
+            // Book seat
+            selectedSeat.bookSeat();
+
+            // Create ticket
+            Ticket ticket =
+                    new Ticket(
+                            nextTicketId++,
+                            customer,
+                            show,
+                            selectedSeat,
+                            500.0
+                    );
+
+            // Store ticket
+            cinema.addTicket(ticket);
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "BOOKING SUCCESSFUL!\n\n"
+                            + "Ticket ID: "
+                            + ticket.getTicketId()
+                            + "\nMovie: "
+                            + show.getMovie().getMovieName()
+                            + "\nDate: "
+                            + show.getDate()
+                            + "\nTime: "
+                            + show.getTime()
+                            + "\nSeat: "
+                            + selectedSeat.getSeatNumber()
+                            + "\nPrice: "
+                            + ticket.getPrice()
+            );
+
+            showShows();
+        });
+
+        refreshContent();
+    }
+
+    // =====================================================
+    // MY TICKETS
+    // =====================================================
+
+    private void showMyTickets() {
+
+        contentPanel.removeAll();
+
+        JLabel title =
+                new JLabel(
+                        "MY TICKETS",
+                        SwingConstants.CENTER
+                );
+
+        title.setFont(
+                new Font("Arial", Font.BOLD, 24)
+        );
+
+        contentPanel.add(
+                title,
+                BorderLayout.NORTH
+        );
+
+        JPanel ticketPanel =
+                new JPanel();
+
+        ticketPanel.setLayout(
+                new BoxLayout(
+                        ticketPanel,
+                        BoxLayout.Y_AXIS
+                )
+        );
+
+        boolean found = false;
+
+        for (Ticket ticket :
+                cinema.getTickets()) {
+
+            if (ticket.getCustomer()
+                    .getUserId()
+                    == customer.getUserId()) {
+
+                found = true;
+
+                JPanel ticketCard =
+                        new JPanel(
+                                new GridLayout(7, 1)
+                        );
+
+                ticketCard.setBorder(
+                        BorderFactory.createTitledBorder(
+                                "Ticket #"
+                                        + ticket.getTicketId()
+                        )
+                );
+
+                ticketCard.add(
+                        new JLabel(
+                                "Movie: "
+                                        + ticket.getShow()
+                                        .getMovie()
+                                        .getMovieName()
+                        )
+                );
+
+                ticketCard.add(
+                        new JLabel(
+                                "Date: "
+                                        + ticket.getShow()
+                                        .getDate()
+                        )
+                );
+
+                ticketCard.add(
+                        new JLabel(
+                                "Time: "
+                                        + ticket.getShow()
+                                        .getTime()
+                        )
+                );
+
+                ticketCard.add(
+                        new JLabel(
+                                "Seat: "
+                                        + ticket.getSeat()
+                                        .getSeatNumber()
+                        )
+                );
+
+                ticketCard.add(
+                        new JLabel(
+                                "Price: "
+                                        + ticket.getPrice()
+                        )
+                );
+
+                JButton cancelButton =
+                        new JButton("Cancel Ticket");
+
+                cancelButton.addActionListener(e -> {
+
+                    int choice =
+                            JOptionPane.showConfirmDialog(
+                                    this,
+                                    "Cancel Ticket #"
+                                            + ticket.getTicketId()
+                                            + "?",
+                                    "Cancel Ticket",
+                                    JOptionPane.YES_NO_OPTION
+                            );
+
+                    if (choice ==
+                            JOptionPane.YES_OPTION) {
+
+                        ticket.getSeat()
+                                .cancelSeat();
+
+                        cinema.removeTicket(ticket);
+
+                        JOptionPane.showMessageDialog(
+                                this,
+                                "Ticket cancelled successfully."
+                        );
+
+                        showMyTickets();
+                    }
+                });
+
+                ticketCard.add(cancelButton);
+
+                ticketPanel.add(ticketCard);
+            }
+        }
+
+        if (!found) {
+
+            ticketPanel.add(
+                    new JLabel(
+                            "You have no tickets."
+                    )
+            );
+        }
+
+        JScrollPane scrollPane =
+                new JScrollPane(ticketPanel);
+
+        contentPanel.add(
+                scrollPane,
+                BorderLayout.CENTER
+        );
+
+        refreshContent();
+    }
+
+    // =====================================================
+    // REFRESH
+    // =====================================================
+
+    private void refreshContent() {
 
         contentPanel.revalidate();
         contentPanel.repaint();
-}
-
+    }
 }

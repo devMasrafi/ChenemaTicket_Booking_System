@@ -1,4 +1,5 @@
 package model;
+
 public class Seat {
 
     private String seatNumber;
@@ -26,6 +27,7 @@ public class Seat {
     }
 
     public void displaySeat() {
+
         if (booked) {
             System.out.println(seatNumber + " - BOOKED");
         } else {

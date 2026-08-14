@@ -1,4 +1,5 @@
 package service;
+
 import java.util.ArrayList;
 
 import model.Movie;
@@ -17,24 +18,58 @@ public class Cinema {
         tickets = new ArrayList<>();
     }
 
-    // Add Movie
+    // =========================
+    // MOVIES
+    // =========================
+
     public void addMovie(Movie movie) {
         movies.add(movie);
-        System.out.println("Movie added successfully!");
     }
 
-    // Add Show
+    public void removeMovie(Movie movie) {
+        movies.remove(movie);
+    }
+
+    public ArrayList<Movie> getMovies() {
+        return movies;
+    }
+
+    // =========================
+    // SHOWS
+    // =========================
+
     public void addShow(Show show) {
         shows.add(show);
-        System.out.println("Show added successfully!");
     }
 
-    // Add Ticket
+    public void removeShow(Show show) {
+        shows.remove(show);
+    }
+
+    public ArrayList<Show> getShows() {
+        return shows;
+    }
+
+    // =========================
+    // TICKETS
+    // =========================
+
     public void addTicket(Ticket ticket) {
         tickets.add(ticket);
     }
 
-    // Display all movies
+    public void removeTicket(Ticket ticket) {
+        tickets.remove(ticket);
+    }
+
+    public ArrayList<Ticket> getTickets() {
+        return tickets;
+    }
+
+    // =========================
+    // CONSOLE METHODS
+    // =========================
+
     public void displayMovies() {
 
         System.out.println("\n===== AVAILABLE MOVIES =====");
@@ -50,7 +85,6 @@ public class Cinema {
         }
     }
 
-    // Display all shows
     public void displayShows() {
 
         System.out.println("\n===== AVAILABLE SHOWS =====");
@@ -64,18 +98,5 @@ public class Cinema {
             show.displayShow();
             System.out.println("--------------------");
         }
-    }
-
-    // Getters
-    public ArrayList<Movie> getMovies() {
-        return movies;
-    }
-
-    public ArrayList<Show> getShows() {
-        return shows;
-    }
-
-    public ArrayList<Ticket> getTickets() {
-        return tickets;
     }
 }

@@ -1,4 +1,5 @@
 package model;
+
 import model.user.Customer;
 
 public class Ticket {
@@ -9,7 +10,13 @@ public class Ticket {
     private Seat seat;
     private double price;
 
-    public Ticket(int ticketId, Customer customer, Show show, Seat seat, double price) {
+    public Ticket(
+            int ticketId,
+            Customer customer,
+            Show show,
+            Seat seat,
+            double price) {
+
         this.ticketId = ticketId;
         this.customer = customer;
         this.show = show;
